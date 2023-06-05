@@ -10,6 +10,15 @@ const password = process.env.NODE_MAILER_PASSWORD;
 const secretkey = process.env.SECRET_KEY;
 const port = process.env.PORT;
 const dbURL = process.env.DB_URL;
+const key1 = process.env.KEY_H;
+const key2 = process.env.KEY_I;
+const key3 = process.env.KEY_P;
+const key4 = process.env.KEY_SN;
+const key5 = process.env.KEY_MN;
+const key6 = process.env.KEY_C;
+const key7 = process.env.KEY_ML;
+const key8 = process.env.KEY_K;
+const key9 = process.env.KEY_SR;
 
 const transporter = nodemailer.createTransport({
   host: "smtp.gmail.com", // e.g., 'smtp.gmail.com'
@@ -84,45 +93,27 @@ app.post("/login", (req, res) => {
               message: "Incorrect password.",
             });
           }
+          // Create a new user instance
+          const user = new User({ enrollmentNumber, password });
 
-          // Check if the user already exists
-          User.findOne({ enrollmentNumber })
-            .then((existingUser) => {
-              if (existingUser) {
-                return res.status(409).json({
-                  success: false,
-                  message: "User already exists.",
-                });
-              }
+          // Save the user to MongoDB
+          user
+            .save()
+            .then(() => {
+              // Generate a JWT token
+              const token = jwt.sign(
+                {
+                  enrollmentNumber: existingEnrollmentNumber.enrollmentNumber,
+                },
+                secretkey,
+                { expiresIn: "1h" }
+              );
 
-              // Create a new user instance
-              const user = new User({ enrollmentNumber, password });
-
-              // Save the user to MongoDB
-              user
-                .save()
-                .then(() => {
-                  // Generate a JWT token
-                  const token = jwt.sign(
-                    {
-                      enrollmentNumber:
-                        existingEnrollmentNumber.enrollmentNumber,
-                    },
-                    secretkey,
-                    { expiresIn: "1h" }
-                  );
-
-                  res.json({
-                    success: true,
-                    message: "User logged in successfully.",
-                    token: token,
-                  });
-                })
-                .catch((error) => {
-                  res
-                    .status(500)
-                    .json({ success: false, error: error.message });
-                });
+              res.json({
+                success: true,
+                message: "User logged in successfully.",
+                token: token,
+              });
             })
             .catch((error) => {
               res.status(500).json({ success: false, error: error.message });
@@ -167,30 +158,47 @@ app.post("/signup", (req, res) => {
         });
       }
 
-      // Create a new user instance
-      const user = new UserPassword({ email, password, cpassword });
+      // Check if the password already exists
+      UserPassword.findOne({ password })
+        .then((existingPassword) => {
+          if (existingPassword) {
+            return res.status(409).json({
+              success: false,
+              message: "Password already exists.",
+            });
+          }
 
-      // Save the user to MongoDB
-      user
-        .save()
-        .then(() => {
-          // Send email to user
-          const mailOptions = {
-            from: "hostelchatbot544@gmail.com",
-            to: email,
-            subject: "Registration Confirmation",
-            text: `Congratulations! You have successfully registered, Here is your Password:${password} `,
-          };
+          // Create a new user instance
+          const user = new UserPassword({ email, password, cpassword });
 
-          transporter.sendMail(mailOptions, (error, info) => {
-            if (error) {
-              console.error("Error sending email:", error);
-            } else {
-              console.log("Email sent:", info.response);
-            }
-          });
+          // Save the user to MongoDB
+          user
+            .save()
+            .then(() => {
+              // Send email to user
+              const mailOptions = {
+                from: "hostelchatbot544@gmail.com",
+                to: email,
+                subject: "Registration Confirmation",
+                text: `Congratulations! You have successfully registered, Here is your Password:${password} `,
+              };
 
-          res.json({ success: true, message: "User created successfully." });
+              transporter.sendMail(mailOptions, (error, info) => {
+                if (error) {
+                  console.error("Error sending email:", error);
+                } else {
+                  console.log("Email sent:", info.response);
+                }
+              });
+
+              res.json({
+                success: true,
+                message: "User created successfully.",
+              });
+            })
+            .catch((error) => {
+              res.status(500).json({ success: false, error: error.message });
+            });
         })
         .catch((error) => {
           res.status(500).json({ success: false, error: error.message });
@@ -200,6 +208,7 @@ app.post("/signup", (req, res) => {
       res.status(500).json({ success: false, error: error.message });
     });
 });
+
 /*
 
 post api for complain registration
@@ -295,6 +304,70 @@ app.get("/complain", (req, res) => {
     })
     .catch((err) => {
       console.error(err);
+      res.status(500).json({ error: "Internal server error" });
+    });
+});
+
+/*
+
+post api for hostel wise search
+
+*/
+
+app.post("/admin", (req, res) => {
+  let hostel1 = null;
+  if (req.body.key == key1) hostel1 = "Hostel-Mahanadi";
+  else if (req.body.key == key2) hostel1 = "Hostel-Indrawati";
+  else if (req.body.key == key3) hostel1 = "Hostel-PG";
+  else if (req.body.key == key4) hostel1 = "Hostel-Seonath";
+  else if (req.body.key == key5) hostel1 = "Hostel-Mainput";
+  else if (req.body.key == key6) hostel1 = "Hostel-Chitrakot";
+  else if (req.body.key == key7) hostel1 = "Hostel-Malhar";
+  else if (req.body.key == key8) hostel1 = "Hostel-Kotumsar";
+  else if (req.body.key == key9) hostel1 = "Hostel-Sirpur";
+  if (hostel1 != null) {
+    complain
+      .find({ hostel: hostel1 })
+      .then((complains) => {
+        res.status(200).json({ complains });
+      })
+      .catch((error) => {
+        res
+          .status(500)
+          .json({ error: "Internal server error", message: error.message });
+      });
+  } else {
+    res.status(400).json({ error: "Invalid Key" });
+  }
+});
+
+/*
+
+get api for hostel wise search 
+
+*/
+app.get("/admin/:key", (req, res) => {
+  const { key } = req.params;
+  req.body.key = key;
+
+  let hostel1;
+  if (req.body.key == key1) hostel1 = "Hostel-Mahanadi";
+  else if (req.body.key == key2) hostel1 = "Hostel-Indrawati";
+  else if (req.body.key == key3) hostel1 = "PG Hostel";
+  else if (req.body.key == key4) hostel1 = "Seonath";
+  else if (req.body.key == key5) hostel1 = "Hostel-Mainput";
+  else if (req.body.key == key6) hostel1 = "Hostel-Chitrakot";
+  else if (req.body.key == key7) hostel1 = "Hostel-Malhar";
+  else if (req.body.key == key8) hostel1 = "Hostel-Kotumsar";
+  else if (req.body.key == key9) hostel1 = "Sirpur";
+
+  complain
+    .find({ hostel: hostel1 })
+    .then((complains) => {
+      res.status(200).json({ complains });
+    })
+    .catch((error) => {
+      console.log(error);
       res.status(500).json({ error: "Internal server error" });
     });
 });
