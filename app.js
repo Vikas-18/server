@@ -8,7 +8,7 @@ const app = express();
 
 const password = process.env.NODE_MAILER_PASSWORD;
 const secretkey = process.env.SECRET_KEY;
-const port = process.env.PORT;
+const port = process.env.PORT || 5000;
 const dbURL = process.env.DB_URL;
 const key1 = process.env.KEY_H;
 const key2 = process.env.KEY_I;
