@@ -285,6 +285,7 @@ app.put("/complain/:id", (req, res) => {
 
 const sendEmail = (complain) => {
   // Compose the email message
+  console.log("Sending email");
   const mailOptions = {
     from: "hostelchatbot544@gmail.com",
     to: complain.email,
