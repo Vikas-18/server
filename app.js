@@ -271,12 +271,47 @@ app.put("/complain/:id", (req, res) => {
         return res.status(404).json({ error: "Complaint not found" });
       }
       res.json({ success: true, message: "Complaint updated successfully" });
+
+      // Send email if the problem is marked as resolved
+      if (completed) {
+        sendEmail(updatedComplain);
+      }
     })
     .catch((err) => {
       console.error(err);
       res.status(500).json({ error: "Internal server error" });
     });
 });
+
+const sendEmail = (complain) => {
+  // Create a transporter using your email service provider's SMTP settings
+  const transporter = nodemailer.createTransport({
+    host: "smtp.gmail.com",
+    port: 587,
+    secure: true, // Set to true if using a secure connection
+    auth: {
+      user: "hostelchatbot544@gmail.com",
+      pass: password,
+    },
+  });
+
+  // Compose the email message
+  const mailOptions = {
+    from: "hostelchatbot544@gmail.com",
+    to: complain.email, // Send the email to the user's email address
+    subject: "Complaint Resolution",
+    text: `Dear ${complain.name},\n\nYour complaint regarding ${complain.problem} has been resolved. Thank you for bringing it to our attention.\n\nBest regards,\nThe Warden`,
+  };
+
+  // Send the email
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      console.log(error);
+    } else {
+      console.log("Email sent: " + info.response);
+    }
+  });
+};
 
 /*
 
