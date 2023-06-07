@@ -217,6 +217,7 @@ post api for complain registration
 
 const complainSchema = new mongoose.Schema({
   name: String,
+  email: String,
   contact: Number,
   hostel: String,
   room: Number,
@@ -229,9 +230,10 @@ const complainSchema = new mongoose.Schema({
 const complain = mongoose.model("complain", complainSchema);
 
 app.post("/complain", (req, res) => {
-  const { name, contact, hostel, room, problem, comment } = req.body;
+  const { name, email, contact, hostel, room, problem, comment } = req.body;
   const complaint = new complain({
     name,
+    email,
     contact,
     hostel,
     room,
