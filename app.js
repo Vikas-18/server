@@ -341,44 +341,44 @@ post api for hostel wise search
 
 app.post("/admin", (req, res) => {
   const { key } = req.body;
-  let hostel = null;
+  let hostel1 = null;
 
   switch (key) {
     case key1:
-      hostel = "Hostel-Mahanadi";
+      hostel1 = "Hostel-Mahanadi";
       break;
     case key2:
-      hostel = "Hostel-Indrawati";
+      hostel1 = "Hostel-Indrawati";
       break;
     case key3:
-      hostel = "PG-Hostel";
+      hostel1 = "PG-Hostel";
       break;
     case key4:
-      hostel = "Seonath";
+      hostel1 = "Seonath";
       break;
     case key5:
-      hostel = "Hostel-Mainput";
+      hostel1 = "Hostel-Mainput";
       break;
     case key6:
-      hostel = "Hostel-Chitrakot";
+      hostel1 = "Hostel-Chitrakot";
       break;
     case key7:
-      hostel = "Hostel-Malhar";
+      hostel1 = "Hostel-Malhar";
       break;
     case key8:
-      hostel = "Hostel-Kotumsar";
+      hostel1 = "Hostel-Kotumsar";
       break;
     case key9:
-      hostel = "Sirpur";
+      hostel1 = "Sirpur";
       break;
     default:
       res.status(400).json({ error: "Invalid Key" });
       return;
   }
 
-  if (hostel !== null) {
+  if (hostel1 !== null) {
     complain
-      .find({ hostel: hostel })
+      .find({ hostel: hostel1 })
       .then((complains) => {
         res.status(200).json({ complains });
       })
