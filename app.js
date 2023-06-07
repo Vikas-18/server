@@ -274,7 +274,6 @@ app.put("/complain/:id", (req, res) => {
       // Send email if the problem is marked as resolved
       if (completed) {
         sendEmail(updatedComplain);
-        console.log("Email sent");
       }
     })
     .catch((err) => {
@@ -285,7 +284,6 @@ app.put("/complain/:id", (req, res) => {
 
 const sendEmail = (complain) => {
   // Compose the email message
-  console.log("Sending email");
   const mailOptions = {
     from: "hostelchatbot544@gmail.com",
     to: complain.email,
