@@ -351,7 +351,7 @@ app.post("/admin", (req, res) => {
   else if (key === key6) hostel1 = "Hostel-Chitrakot";
   else if (key === key7) hostel1 = "Hostel-Malhar";
   else if (key === key8) hostel1 = "Hostel-Kotumsar";
-  else if (key === key9) hostel1 = "Sirpur";
+  else if (key === key9) hostel1 = "Hostel-Sirpur";
 
   if (hostel1) {
     complain
@@ -385,7 +385,7 @@ app.get("/admin/:key", (req, res) => {
   else if (key === key6) hostel1 = "Hostel-Chitrakot";
   else if (key === key7) hostel1 = "Hostel-Malhar";
   else if (key === key8) hostel1 = "Hostel-Kotumsar";
-  else if (key === key9) hostel1 = "Sirpur";
+  else if (key === key9) hostel1 = "Hostel-Sirpur";
 
   if (hostel1) {
     complain
