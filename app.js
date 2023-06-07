@@ -340,43 +340,17 @@ post api for hostel wise search
 */
 
 app.post("/admin", (req, res) => {
-  const { key } = req.body;
   let hostel1 = null;
-
-  switch (key) {
-    case key1:
-      hostel1 = "Hostel-Mahanadi";
-      break;
-    case key2:
-      hostel1 = "Hostel-Indrawati";
-      break;
-    case key3:
-      hostel1 = "PG-Hostel";
-      break;
-    case key4:
-      hostel1 = "Seonath";
-      break;
-    case key5:
-      hostel1 = "Hostel-Mainput";
-      break;
-    case key6:
-      hostel1 = "Hostel-Chitrakot";
-      break;
-    case key7:
-      hostel1 = "Hostel-Malhar";
-      break;
-    case key8:
-      hostel1 = "Hostel-Kotumsar";
-      break;
-    case key9:
-      hostel1 = "Sirpur";
-      break;
-    default:
-      res.status(400).json({ error: "Invalid Key" });
-      return;
-  }
-
-  if (hostel1 !== null) {
+  if (req.body.key == key1) hostel1 = "Hostel-Mahanadi";
+  else if (req.body.key == key2) hostel1 = "Hostel-Indrawati";
+  else if (req.body.key == key3) hostel1 = "Hostel-PG";
+  else if (req.body.key == key4) hostel1 = "Hostel-Seonath";
+  else if (req.body.key == key5) hostel1 = "Hostel-Mainput";
+  else if (req.body.key == key6) hostel1 = "Hostel-Chitrakot";
+  else if (req.body.key == key7) hostel1 = "Hostel-Malhar";
+  else if (req.body.key == key8) hostel1 = "Hostel-Kotumsar";
+  else if (req.body.key == key9) hostel1 = "Hostel-Sirpur";
+  if (hostel1 != null) {
     complain
       .find({ hostel: hostel1 })
       .then((complains) => {
