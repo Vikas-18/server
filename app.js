@@ -259,7 +259,6 @@ app.post("/complain", (req, res) => {
 put api for persisting the state of checkbox
 
 */
-
 app.put("/complain/:id", (req, res) => {
   const complainId = req.params.id;
   const { completed } = req.body;
@@ -275,6 +274,7 @@ app.put("/complain/:id", (req, res) => {
       // Send email if the problem is marked as resolved
       if (completed) {
         sendEmail(updatedComplain);
+        console.log("Email sent");
       }
     })
     .catch((err) => {
@@ -284,21 +284,10 @@ app.put("/complain/:id", (req, res) => {
 });
 
 const sendEmail = (complain) => {
-  // Create a transporter using your email service provider's SMTP settings
-  const transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com",
-    port: 587,
-    secure: true, // Set to true if using a secure connection
-    auth: {
-      user: "hostelchatbot544@gmail.com",
-      pass: password,
-    },
-  });
-
   // Compose the email message
   const mailOptions = {
     from: "hostelchatbot544@gmail.com",
-    to: complain.email, // Send the email to the user's email address
+    to: complain.email,
     subject: "Complaint Resolution",
     text: `Dear ${complain.name},\n\nYour complaint regarding ${complain.problem} has been resolved. Thank you for bringing it to our attention.\n\nBest regards,\nThe Warden`,
   };
