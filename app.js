@@ -375,28 +375,31 @@ get api for hostel wise search
 */
 app.get("/admin/:key", (req, res) => {
   const { key } = req.params;
-  req.body.key = key;
 
   let hostel1;
-  if (req.body.key == key1) hostel1 = "Hostel-Mahanadi";
-  else if (req.body.key == key2) hostel1 = "Hostel-Indrawati";
-  else if (req.body.key == key3) hostel1 = "PG Hostel";
-  else if (req.body.key == key4) hostel1 = "Seonath";
-  else if (req.body.key == key5) hostel1 = "Hostel-Mainput";
-  else if (req.body.key == key6) hostel1 = "Hostel-Chitrakot";
-  else if (req.body.key == key7) hostel1 = "Hostel-Malhar";
-  else if (req.body.key == key8) hostel1 = "Hostel-Kotumsar";
-  else if (req.body.key == key9) hostel1 = "Sirpur";
+  if (key === key1) hostel1 = "Hostel-Mahanadi";
+  else if (key === key2) hostel1 = "Hostel-Indrawati";
+  else if (key === key3) hostel1 = "PG Hostel";
+  else if (key === key4) hostel1 = "Seonath";
+  else if (key === key5) hostel1 = "Hostel-Mainput";
+  else if (key === key6) hostel1 = "Hostel-Chitrakot";
+  else if (key === key7) hostel1 = "Hostel-Malhar";
+  else if (key === key8) hostel1 = "Hostel-Kotumsar";
+  else if (key === key9) hostel1 = "Sirpur";
 
-  complain
-    .find({ hostel: hostel1 })
-    .then((complains) => {
-      res.status(200).json({ complains });
-    })
-    .catch((error) => {
-      console.log(error);
-      res.status(500).json({ error: "Internal server error" });
-    });
+  if (hostel1) {
+    complain
+      .find({ hostel: hostel1 })
+      .then((complains) => {
+        res.status(200).json({ complains });
+      })
+      .catch((error) => {
+        console.log(error);
+        res.status(500).json({ error: "Internal server error" });
+      });
+  } else {
+    res.status(400).json({ error: "Invalid Key" });
+  }
 });
 
 //server listening of port
