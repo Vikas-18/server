@@ -375,7 +375,6 @@ get api for hostel wise search
 */
 app.get("/admin/:key", (req, res) => {
   const { key } = req.params;
-  const { sortBy } = req.query;
 
   let hostel;
   switch (key) {
@@ -412,20 +411,13 @@ app.get("/admin/:key", (req, res) => {
   }
 
   if (hostel) {
-    let sortOptions = {};
-
-    if (sortBy) {
-      sortOptions = { problem: sortBy };
-    }
-
     complain
       .find({ hostel })
-      .sort(sortOptions)
       .then((complains) => {
-        res.json(complains);
+        res.status(200).json({ complains });
       })
-      .catch((err) => {
-        console.error(err);
+      .catch((error) => {
+        console.log(error);
         res.status(500).json({ error: "Internal server error" });
       });
   } else {
