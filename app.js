@@ -411,13 +411,20 @@ app.get("/admin/:key", (req, res) => {
   }
 
   if (hostel) {
+    let sortOptions = {};
+
+    if (sortBy) {
+      sortOptions = { hostel: sortBy };
+    }
+
     complain
       .find(hostel)
+      .sort(sortOptions)
       .then((complains) => {
-        res.status(200).json(complains);
+        res.json(complains);
       })
-      .catch((error) => {
-        console.log(error);
+      .catch((err) => {
+        console.error(err);
         res.status(500).json({ error: "Internal server error" });
       });
   } else {
