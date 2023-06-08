@@ -376,20 +376,43 @@ get api for hostel wise search
 app.get("/admin/:key", (req, res) => {
   const { key } = req.params;
 
-  let hostel1;
-  if (key === key1) hostel1 = "Hostel-Mahanadi";
-  else if (key === key2) hostel1 = "Hostel-Indrawati";
-  else if (key === key3) hostel1 = "PG Hostel";
-  else if (key === key4) hostel1 = "Seonath";
-  else if (key === key5) hostel1 = "Hostel-Mainput";
-  else if (key === key6) hostel1 = "Hostel-Chitrakot";
-  else if (key === key7) hostel1 = "Hostel-Malhar";
-  else if (key === key8) hostel1 = "Hostel-Kotumsar";
-  else if (key === key9) hostel1 = "Hostel-Sirpur";
+  let hostel;
+  switch (key) {
+    case key1:
+      hostel = "Hostel-Mahanadi";
+      break;
+    case key2:
+      hostel = "Hostel-Indrawati";
+      break;
+    case key3:
+      hostel = "PG Hostel";
+      break;
+    case key4:
+      hostel = "Seonath";
+      break;
+    case key5:
+      hostel = "Hostel-Mainput";
+      break;
+    case key6:
+      hostel = "Hostel-Chitrakot";
+      break;
+    case key7:
+      hostel = "Hostel-Malhar";
+      break;
+    case key8:
+      hostel = "Hostel-Kotumsar";
+      break;
+    case key9:
+      hostel = "Hostel-Sirpur";
+      break;
+    default:
+      hostel = null;
+      break;
+  }
 
-  if (hostel1) {
+  if (hostel) {
     complain
-      .find({ hostel: hostel1 })
+      .find({ hostel })
       .then((complains) => {
         res.status(200).json({ complains });
       })
