@@ -412,9 +412,9 @@ app.get("/admin/:key", (req, res) => {
 
   if (hostel) {
     complain
-      .find({ hostel })
+      .find(hostel)
       .then((complains) => {
-        res.status(200).json({ complains });
+        res.status(200).json(complains);
       })
       .catch((error) => {
         console.log(error);
