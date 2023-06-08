@@ -375,6 +375,7 @@ get api for hostel wise search
 */
 app.get("/admin/:key", (req, res) => {
   const { key } = req.params;
+  const { sortBy } = req.query;
 
   let hostel;
   switch (key) {
@@ -414,11 +415,11 @@ app.get("/admin/:key", (req, res) => {
     let sortOptions = {};
 
     if (sortBy) {
-      sortOptions = { hostel: sortBy };
+      sortOptions = { problem: sortBy };
     }
 
     complain
-      .find(hostel)
+      .find({ hostel })
       .sort(sortOptions)
       .then((complains) => {
         res.json(complains);
