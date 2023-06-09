@@ -4,6 +4,7 @@ const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
 require("dotenv").config();
 const cors = require("cors");
+const axios = require("axios");
 const app = express();
 
 const password = process.env.NODE_MAILER_PASSWORD;
@@ -424,6 +425,30 @@ app.get("/admin/:key", (req, res) => {
     res.status(400).json({ error: "Invalid Key" });
   }
 });
+
+// Route handler to ping the backend
+app.get("/ping", (req, res) => {
+  res.send("Backend pinged successfully");
+});
+
+// Function to periodically ping the backend
+const pingBackend = () => {
+  setInterval(() => {
+    axios
+      .get("https://hostelchatbotnitrr.onrender.com/ping")
+      .then((response) => {
+        console.log("Backend pinged successfully");
+      })
+      .catch((error) => {
+        console.log("Error pinging backend:", error.message);
+      });
+  }, 300000); // Interval of 5 minutes (300000 milliseconds)
+
+  console.log("Backend pinging started");
+};
+
+// Start pinging the backend
+pingBackend();
 
 //server listening of port
 app.listen(port, () => {
