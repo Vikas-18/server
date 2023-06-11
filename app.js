@@ -2,10 +2,18 @@ const express = require("express");
 const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
+const twilio = require("twilio");
 require("dotenv").config();
 const cors = require("cors");
 const axios = require("axios");
 const app = express();
+
+const accountSid = process.env.ACCOUNT_SID;
+const authToken = process.env.AUTH_TOKEN;
+const twilio_mob = process.env.TWILIO_MOB;
+const receiver = process.env.RECIEPIENT_MOB;
+
+const client = twilio(accountSid, authToken);
 
 const password = process.env.NODE_MAILER_PASSWORD;
 const secretkey = process.env.SECRET_KEY;
@@ -241,9 +249,20 @@ app.post("/complain", (req, res) => {
     problem,
     comment,
   });
+
   complaint
     .save()
     .then((savedComplaint) => {
+      // Send SMS using Twilio
+      client.messages
+        .create({
+          body: "A new complaint has been registered.",
+          from: twilio_mob,
+          to: receiver,
+        })
+        .then((message) => console.log(message.sid))
+        .catch((err) => console.error(err));
+
       res.json({
         success: true,
         message: "Complaint registered successfully.",
