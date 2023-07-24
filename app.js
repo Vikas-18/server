@@ -56,13 +56,7 @@ mongoose
 app.use(cors()); //cors principal so that frontend can connect with backend
 app.use(express.json()); // Add this line to parse JSON data
 
-/*
 
-
-login post api
-
-
-*/
 
 // Define a schema
 const userSchema = new mongoose.Schema({
@@ -79,7 +73,13 @@ const EnrollmentNumber = mongoose.model(
   enrollementNumberSchema
 );
 
-// POST endpoint to insert data into MongoDB
+/*
+
+
+login post api
+
+
+*/
 app.post("/login", (req, res) => {
   const { enrollmentNumber, password } = req.body;
 
@@ -137,13 +137,6 @@ app.post("/login", (req, res) => {
     });
 });
 
-/*
-
-
-signup post api 
-
-
-*/
 const passwordSchema = new mongoose.Schema({
   email: String,
   password: String,
@@ -153,7 +146,13 @@ const passwordSchema = new mongoose.Schema({
 // Create a model (collection)---> in database it will be saved as plural
 const UserPassword = mongoose.model("UserPassword", passwordSchema);
 
-// POST endpoint to insert data into MongoDB
+/*
+
+
+signup post api 
+
+
+*/
 app.post("/signup", (req, res) => {
   const { email, password, cpassword } = req.body;
 
