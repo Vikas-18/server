@@ -262,14 +262,6 @@ app.post("/complain", (req, res) => {
               "Complaint registered successfully, but SMS notification failed.",
           });
         });
-      client.messages
-        .create({
-          body: "hii",
-          from: "+15739201065",
-          to: "+919307286450",
-        })
-        .then((message) => console.log(message.sid))
-        .done();
     })
     .catch((err) => {
       console.error(err);
@@ -277,16 +269,16 @@ app.post("/complain", (req, res) => {
     });
 });
 
-// function sendSmsNotification() {
-//   const message = 'A new complaint has been registered.';
-//   const recipientPhoneNumber = '+919307286450'; // Recipient's phone number
-
-//   return client.messages.create({
-//     body: message,
-//     from: '+15739201065',
-//     to: recipientPhoneNumber,
-//   });
-// }
+function sendSmsNotification() {
+  client.messages
+    .create({
+      body: "hii",
+      from: "+15739201065",
+      to: "+919307286450",
+    })
+    .then((message) => console.log(message.sid))
+    .done();
+}
 
 /*
 
