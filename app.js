@@ -8,8 +8,8 @@ const axios = require("axios");
 const twilio = require('twilio');
 const app = express();
 
-const accountSid = 'ACdcbe25e646183b97dce30b77825aaf1e';
-const authToken = '5510f007946960b5785ea91dc03bc836';
+const accountSid = process.env.TWILIO_AUTH;
+const authToken = process.env.TWILIO_TOKEN;
 const client = twilio(accountSid, authToken);
 
 const password = process.env.NODE_MAILER_PASSWORD;
@@ -272,7 +272,7 @@ app.post("/complain", (req, res) => {
 
 function sendSmsNotification() {
   const message = 'A new complaint has been registered.';
-  const recipientPhoneNumber = '9307286450'; // Recipient's phone number
+  const recipientPhoneNumber = 9307286450; // Recipient's phone number
 
   return client.messages.create({
     body: message,
