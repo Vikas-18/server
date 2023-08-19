@@ -5,7 +5,7 @@ const nodemailer = require("nodemailer");
 require("dotenv").config();
 const cors = require("cors");
 const axios = require("axios");
-const twilio = require('twilio');
+const twilio = require("twilio");
 const app = express();
 
 const accountSid = process.env.TWILIO_AUTH;
@@ -52,8 +52,6 @@ mongoose
 // Middleware to parse the request body
 app.use(cors()); //cors principal so that frontend can connect with backend
 app.use(express.json()); // Add this line to parse JSON data
-
-
 
 // Define a schema
 const userSchema = new mongoose.Schema({
@@ -257,12 +255,21 @@ app.post("/complain", (req, res) => {
           });
         })
         .catch((error) => {
-          console.error('Error sending SMS:', error);
+          console.error("Error sending SMS:", error);
           res.json({
             success: true,
-            message: "Complaint registered successfully, but SMS notification failed.",
+            message:
+              "Complaint registered successfully, but SMS notification failed.",
           });
         });
+      client.messages
+        .create({
+          body: "hii",
+          from: "+15739201065",
+          to: "+919307286450",
+        })
+        .then((message) => console.log(message.sid))
+        .done();
     })
     .catch((err) => {
       console.error(err);
@@ -270,16 +277,16 @@ app.post("/complain", (req, res) => {
     });
 });
 
-function sendSmsNotification() {
-  const message = 'A new complaint has been registered.';
-  const recipientPhoneNumber = '+919307286450'; // Recipient's phone number
+// function sendSmsNotification() {
+//   const message = 'A new complaint has been registered.';
+//   const recipientPhoneNumber = '+919307286450'; // Recipient's phone number
 
-  return client.messages.create({
-    body: message,
-    from: '+15739201065',
-    to: recipientPhoneNumber,
-  });
-}
+//   return client.messages.create({
+//     body: message,
+//     from: '+15739201065',
+//     to: recipientPhoneNumber,
+//   });
+// }
 
 /*
 
@@ -451,7 +458,6 @@ app.get("/admin/:key", (req, res) => {
     res.status(400).json({ error: "Invalid Key" });
   }
 });
-
 
 //server listening of port
 app.listen(port, () => {
