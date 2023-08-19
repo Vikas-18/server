@@ -5,7 +5,12 @@ const nodemailer = require("nodemailer");
 require("dotenv").config();
 const cors = require("cors");
 const axios = require("axios");
+const twilio = require('twilio');
 const app = express();
+
+const accountSid = 'ACdcbe25e646183b97dce30b77825aaf1e';
+const authToken = '5510f007946960b5785ea91dc03bc836';
+const client = twilio(accountSid, authToken);
 
 const password = process.env.NODE_MAILER_PASSWORD;
 const secretkey = process.env.SECRET_KEY;
@@ -240,20 +245,41 @@ app.post("/complain", (req, res) => {
     problem,
     comment,
   });
-
   complaint
     .save()
     .then((savedComplaint) => {
-      res.json({
-        success: true,
-        message: "Complaint registered successfully.",
-      });
+      // Send SMS notification if complaint is successfully registered
+      sendSmsNotification()
+        .then(() => {
+          res.json({
+            success: true,
+            message: "Complaint registered successfully.",
+          });
+        })
+        .catch((error) => {
+          console.error('Error sending SMS:', error);
+          res.json({
+            success: true,
+            message: "Complaint registered successfully, but SMS notification failed.",
+          });
+        });
     })
     .catch((err) => {
       console.error(err);
       res.status(500).json({ error: "Internal server error" });
     });
 });
+
+function sendSmsNotification() {
+  const message = 'A new complaint has been registered.';
+  const recipientPhoneNumber = '9307286450'; // Recipient's phone number
+
+  return client.messages.create({
+    body: message,
+    from: '+15739201065',
+    to: recipientPhoneNumber,
+  });
+}
 
 /*
 
