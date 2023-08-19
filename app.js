@@ -272,7 +272,7 @@ app.post("/complain", (req, res) => {
 
 function sendSmsNotification() {
   const message = 'A new complaint has been registered.';
-  const recipientPhoneNumber = '9307286450'; // Recipient's phone number
+  const recipientPhoneNumber = '+919307286450'; // Recipient's phone number
 
   return client.messages.create({
     body: message,
