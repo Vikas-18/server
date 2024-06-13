@@ -4,7 +4,6 @@ const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
 require("dotenv").config();
 const cors = require("cors");
-const axios = require("axios");
 const twilio = require("twilio");
 const app = express();
 
