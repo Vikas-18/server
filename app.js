@@ -281,7 +281,7 @@ function sendSmsNotification() {
 
 /*
 
-put api for persisting the state of checkbox
+put api for persisting the state of checkbox for sending the email on completing the resolution.
 
 */
 app.put("/complain/:id", (req, res) => {
