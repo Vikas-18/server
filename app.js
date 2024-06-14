@@ -245,7 +245,7 @@ app.post("/complain", (req, res) => {
   complaint
     .save()
     .then((savedComplaint) => {
-      // Send SMS notification if complaint is successfully registered
+      // Send SMS notification if complaint is successfully registered for notifying wardens
       sendSmsNotification()
         .then(() => {
           res.json({
